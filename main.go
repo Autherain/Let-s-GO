@@ -33,13 +33,18 @@ func snippetCreate(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Display a form for creating a new snippet..."))
 }
 
+func snippetCreatePost(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("Save a new snippet ..."))
+}
+
 func main() {
 	// Register the two new handler functions and corresponding route patterns with
 	// the servemux, in exactly the same way that we did before.
 	mux := http.NewServeMux()
-	mux.HandleFunc("/{$}", home) // Match the endpoint with a single slash and nothing else
-	mux.HandleFunc("/snippet/view/{id}", snippetView)
-	mux.HandleFunc("/snippet/create", snippetCreate)
+	mux.HandleFunc("GET /{$}", home) // Match the endpoint with a single slash and nothing else
+	mux.HandleFunc("GET /hnippet/view/{id}", snippetView)
+	mux.HandleFunc("GET /snippet/create", snippetCreate)
+	mux.HandleFunc("POST /snippet/create", snippetCreatePost)
 
 	log.Print("starting server on :4000")
 
