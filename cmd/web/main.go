@@ -29,6 +29,7 @@ func main() {
 
 	db, err := openDB(*dsn)
 	if err != nil {
+		logger.Error("Something went wrong when connecting to the SQL DB")
 		logger.Error(err.Error())
 		os.Exit(1)
 	}
@@ -41,7 +42,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	// And add it to the application dependencies.
+	// And add the template cache, logger and snippets datastructure to the application dependencies.
 	app := &application{
 		logger:        logger,
 		snippets:      &models.SnippetModel{DB: db},
