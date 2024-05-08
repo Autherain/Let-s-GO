@@ -52,7 +52,27 @@ func (app *application) snippetView(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Fprintf(w, "%+v", snippet)
+	// Initialize a slice containing the paths to the view.tmpl file,
+	// plus the base layout and navigation partial that we made earlier.
+	files := []string{
+		"./ui/html/base.html",
+		"./ui/html/partials/nav.html",
+		"./ui/html/pages/view.html",
+	}
+
+	// Parse the template files...
+	ts, err := template.ParseFiles(files...)
+	if err != nil {
+		app.serverError(w, r, err)
+		return
+	}
+
+	// And then execute them. Notice how we are passing in the snippet
+	// data (a models.Snippet struct) as the final parameter?
+	err = ts.ExecuteTemplate(w, "base", snippet)
+	if err != nil {
+		app.serverError(w, r, err)
+	}
 }
 
 // Change the signature of the snippetCreate handler so it is defined as a method
